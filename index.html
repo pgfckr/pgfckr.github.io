@@ -2,9 +2,25 @@
 <script src="script.js"></script>
 <link rel="stylesheet" type="text/css" href="mystyle.css">
 
-<p>Hello World</p>
-<textarea>
+<div id="container" style="margin: auto; width: 80%">
+    <div id="toolbar">
+        <button onclick="convert()">Convert to script</button>
+        <button>Copy to clipboard</button>      
+    </div>
+    <div id="inputDiv" style="float: left; width: 50%">
+        <p>Input</p>
+        <textarea id="inputArea"style="width:100%; resize: none" rows="50">
+            
+        </textarea>
+    </div>
+    <div id="outputDiv" style="float: right; width: 50%">
+        <p>Output</p>
+        <textarea id="outputArea" readonly style="width:100%; resize: none" rows="50">
+            
+        </textarea>
+    </div>
+</div>
 
-</textarea>
+
 
 </html>
