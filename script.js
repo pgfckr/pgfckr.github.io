@@ -60,8 +60,6 @@ function findBreaks(rawString) {
 }
 
 function makeAlias(stringArray) {
-
-    alert(stringArray);
     var aliasString = "alias line;\n";
     var lastLine = 0;
     if (Array.isArray(stringArray)) {
