@@ -1,4 +1,3 @@
-
 /**
  * Converts Text input into source alias
  * 
@@ -23,31 +22,29 @@ function convert() {
 function findBreaks(rawString) {
     var rawInput = rawString;
     var ref = [];
-    var maxChars = 20;
+    var maxChars = 100;
     var maxVariation = 10;
 
     while (rawInput.length > maxChars) {
-        
+
         var tempString = rawInput.substring(0, maxChars);
         var bestBreakpoint = maxChars;
         var criticalArea = rawInput.substring(maxChars - maxVariation, maxChars);
+        var worstString = rawInput.substring(0, maxChars);
 
         if (criticalArea.includes("\n")) {
-            ref.push(rawInput.substring(0, rawInput.lastIndexOf("\n")));
-            rawInput = rawInput.substring(rawInput.lastIndexOf("\n"));
-        }
-
-        else if (criticalArea.includes(".")) {
-            ref.push(rawInput.substring(0, rawInput.lastIndexOf(".")));
-            rawInput = rawInput.substring(rawInput.lastIndexOf("."));
-        }
-
-        else if (criticalArea.includes(" ")) {
-            ref.push(rawInput.substring(0, rawInput.lastIndexOf(" ")));
-            rawInput = rawInput.substring(rawInput.lastIndexOf(" "));
-        }
-
-        else {
+            var pushString = rawInput.substring(0, worstString.lastIndexOf("\n")).replace("\n", "");
+            ref.push(pushString);
+            rawInput = rawInput.substring(pushString.length + 1);
+        } else if (criticalArea.includes(".")) {
+            var pushString = rawInput.substring(0, worstString.lastIndexOf(".")).replace("\n", "");
+            ref.push(pushString);
+            rawInput = rawInput.substring(pushString.length + 1);
+        } else if (criticalArea.includes(" ")) {
+            var pushString = rawInput.substring(0, worstString.lastIndexOf(" ")).replace("\n", "")
+            ref.push(pushString);
+            rawInput = rawInput.substring(pushString.length + 1);
+        } else {
             ref.push(rawInput.substring(0, maxChars));
             rawInput = rawInput.substring(maxChars);
         }
@@ -61,19 +58,26 @@ function findBreaks(rawString) {
 }
 
 function makeAlias(stringArray) {
-    var aliasString = stringArray.length;
+    var aliasString = "";
+    var lastLine = 0;
+    for (var i = 0; i < stringArray.length - 1; i++) {
+        lastLine = i;
+        aliasString += "alias line" + i + "\"say " + stringArray[i] +
+            "; alias line line" + (i + 1) + "\";\n";
+    }
+    aliasString += "alias line" + i + "\"say " + stringArray[lastLine + 1] +
+        "; alias line line" + (0) + "\";\n";;
     return aliasString;
 }
 
-function copyTextToClipboard() {    
+function copyTextToClipboard() {
     var text = document.getElementById("outputArea").value;
     navigator.clipboard.writeText(text).then(
-      function() {
-        console.log("Async: Copying to clipboard was successful!");
-      },
-      function(err) {
-        console.error("Async: Could not copy text: ", err);
-      }
+        function() {
+            console.log("Copying to clipboard");
+        },
+        function(err) {
+            console.error("Could not copy: ", err);
+        }
     );
-  }
-
+}
