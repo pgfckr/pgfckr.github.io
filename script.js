@@ -22,8 +22,8 @@ function convert() {
 function findBreaks(rawString) {
     var rawInput = rawString;
     var ref = [];
-    var maxChars = 100;
-    var maxVariation = 10;
+    var maxChars = 120;
+    var maxVariation = 15;
 
     while (rawInput.length > maxChars) {
 
@@ -53,20 +53,37 @@ function findBreaks(rawString) {
 
     if (rawInput.length > 0) {
         ref.push(rawInput);
+    } else {
+        ref.push("no input found");
     }
     return ref;
 }
 
 function makeAlias(stringArray) {
-    var aliasString = "";
+
+    alert(stringArray);
+    var aliasString = "alias line;\n";
     var lastLine = 0;
-    for (var i = 0; i < stringArray.length - 1; i++) {
-        lastLine = i;
-        aliasString += "alias line" + i + "\"say " + stringArray[i] +
-            "; alias line line" + (i + 1) + "\";\n";
+    if (Array.isArray(stringArray)) {
+        for (var i = 0; i < stringArray.length - 1; i++) {
+            lastLine = i;
+            aliasString += "alias line" + i + "\"say " + stringArray[i] +
+                "; alias line line" + (i + 1) + "\";\n";
+        }
+        aliasString += "alias line" + i + "\"say " + stringArray[lastLine + 1] +
+            "; alias line line" + (0) + "\";\n";
+        aliasString += "alias line line0;\n";
+    } else {
+        aliasString += "alias line0" + "\"say " + stringArray +
+            "; alias line line" + (0) + "\";\n";
+        aliasString += "alias line line0;\n";
     }
-    aliasString += "alias line" + i + "\"say " + stringArray[lastLine + 1] +
-        "; alias line line" + (0) + "\";\n";;
+
+    if (document.getElementById("checkboxMouseInput").checked == true) {
+        aliasString += "bind mouse" + document.getElementById("bindInput").value.toLowerCase() + " line";
+    } else {
+        aliasString += "bind " + document.getElementById("bindInput").value.toLowerCase() + " line";
+    }
     return aliasString;
 }
 

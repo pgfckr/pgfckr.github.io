@@ -1,15 +1,28 @@
 <html>
 <script src="script.js"></script>
-<link rel="stylesheet" type="text/css" href="mystyle.css">
+<link rel="stylesheet" type="text/css" href="style.css">
 
 <div id="container" style="margin: auto; width: 80%">
     <div id="toolbar">
-        <button onclick="convert()">Convert to script</button>
-        <button onclick="copyTextToClipboard()">Copy to clipboard</button>      
+        <ul>
+            <li>
+                <button onclick="convert()">Convert to script</button>
+            </li>
+            <li>
+                <button onclick="copyTextToClipboard()">Copy to clipboard</button>
+            </li>
+            <li>
+                <input id="bindInput" type="" maxlength="1" placeholder="Bind to this key">
+            </li>
+            <li>
+                <input id="checkboxMouseInput" type="checkbox"> Is mouse button? (.ie 1 in "Bind to this key" for mouse1 2 for mouse2 etc)
+            </li>
+        </ul>
+
     </div>
     <div id="inputDiv" style="float: left; width: 50%">
         <p>Input</p>
-        <textarea id="inputArea"style="width:100%; resize: none" rows="50">
+        <textarea id="inputArea" style="width:100%; resize: none" rows="50">
             
         </textarea>
     </div>
