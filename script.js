@@ -35,20 +35,20 @@ function findBreaks(rawString) {
         var criticalArea = rawInput.substring(maxChars - maxVariation, maxChars);
         var worstString = rawInput.substring(0, maxChars);
 
-        if (criticalArea.includes("\n")) {
-            var pushString = rawInput.substring(0, worstString.lastIndexOf("\n")).replace("\n", "");
+        if (criticalArea.includes(/(\r\n|\n|\r)/gm)){
+            var pushString = rawInput.substring(0, worstString.lastIndexOf("\n")).replace(/(\r\n|\n|\r)/gm,""); ;
             ref.push(pushString);
             rawInput = rawInput.substring(pushString.length + 1);
         } else if (criticalArea.includes(".")) {
-            var pushString = rawInput.substring(0, worstString.lastIndexOf(".")).replace("\n", "");
+            var pushString = rawInput.substring(0, worstString.lastIndexOf(".")).replace(/(\r\n|\n|\r)/gm,""); ;
             ref.push(pushString);
             rawInput = rawInput.substring(pushString.length + 1);
         } else if (criticalArea.includes(" ")) {
-            var pushString = rawInput.substring(0, worstString.lastIndexOf(" ")).replace("\n", "");
+            var pushString = rawInput.substring(0, worstString.lastIndexOf(" ")).replace(/(\r\n|\n|\r)/gm,""); ;
             ref.push(pushString);
             rawInput = rawInput.substring(pushString.length + 1);
         } else {
-            ref.push(rawInput.substring(0, maxChars)).replace("\n", "");
+            ref.push(rawInput.substring(0, maxChars)).replace(/(\r\n|\n|\r)/gm,""); ;
             rawInput = rawInput.substring(maxChars);
         }
 
