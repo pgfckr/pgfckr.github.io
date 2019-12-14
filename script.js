@@ -12,6 +12,9 @@ function convert() {
     document.getElementById("outputArea").value = ref;
 }
 
+
+
+
 /**
  * Breaks the input into strings of a maximum lenght
  * the variance is the space in one of those strings where the script will look for the rightmost linebreaks colons or semicolons 
@@ -27,7 +30,7 @@ function findBreaks(rawString) {
     var maxVariation = 10;
 
     while (rawInput.length > maxChars) {
-        
+
         var tempString = rawInput.substring(0, maxChars);
         var bestBreakpoint = maxChars;
         var criticalArea = rawInput.substring(maxChars - maxVariation, maxChars);
@@ -65,15 +68,15 @@ function makeAlias(stringArray) {
     return aliasString;
 }
 
-function copyTextToClipboard() {    
+function copyTextToClipboard() {
     var text = document.getElementById("outputArea").value;
     navigator.clipboard.writeText(text).then(
-      function() {
-        console.log("Async: Copying to clipboard was successful!");
-      },
-      function(err) {
-        console.error("Async: Could not copy text: ", err);
-      }
+        function () {
+            console.log("Async: Copying to clipboard was successful!");
+        },
+        function (err) {
+            console.error("Async: Could not copy text: ", err);
+        }
     );
-  }
+}
 
