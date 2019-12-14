@@ -44,11 +44,11 @@ function findBreaks(rawString) {
             ref.push(pushString);
             rawInput = rawInput.substring(pushString.length + 1);
         } else if (criticalArea.includes(" ")) {
-            var pushString = rawInput.substring(0, worstString.lastIndexOf(" ")).replace("\n", "")
+            var pushString = rawInput.substring(0, worstString.lastIndexOf(" ")).replace("\n", "");
             ref.push(pushString);
             rawInput = rawInput.substring(pushString.length + 1);
         } else {
-            ref.push(rawInput.substring(0, maxChars));
+            ref.push(rawInput.substring(0, maxChars)).replace("\n", "");
             rawInput = rawInput.substring(maxChars);
         }
 
