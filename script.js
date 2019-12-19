@@ -35,20 +35,24 @@ function findBreaks(rawString) {
         var criticalArea = rawInput.substring(maxChars - maxVariation, maxChars);
         var worstString = rawInput.substring(0, maxChars);
 
-        if (criticalArea.includes(/(\r\n|\n|\r)/gm)){
-            var pushString = rawInput.substring(0, worstString.lastIndexOf("\n")).replace(/(\r\n|\n|\r)/gm,""); ;
+        if (criticalArea.includes("\n")){
+            var pushString = rawInput.substring(0, worstString.lastIndexOf("\n"));
+            formatLineBreaks(pushString);
             ref.push(pushString);
             rawInput = rawInput.substring(pushString.length + 1);
         } else if (criticalArea.includes(".")) {
-            var pushString = rawInput.substring(0, worstString.lastIndexOf(".")).replace(/(\r\n|\n|\r)/gm,""); ;
+            var pushString = rawInput.substring(0, worstString.lastIndexOf("."));
+            formatLineBreaks(pushString);
             ref.push(pushString);
             rawInput = rawInput.substring(pushString.length + 1);
         } else if (criticalArea.includes(" ")) {
-            var pushString = rawInput.substring(0, worstString.lastIndexOf(" ")).replace(/(\r\n|\n|\r)/gm,""); ;
+            var pushString = rawInput.substring(0, worstString.lastIndexOf(" "));
+            formatLineBreaks(pushString);
             ref.push(pushString);
             rawInput = rawInput.substring(pushString.length + 1);
         } else {
-            ref.push(rawInput.substring(0, maxChars)).replace(/(\r\n|\n|\r)/gm,""); ;
+            ref.push(rawInput.substring(0, maxChars));
+            formatLineBreaks(pushString);
             rawInput = rawInput.substring(maxChars);
         }
 
@@ -98,4 +102,10 @@ function copyTextToClipboard() {
             console.error("Could not copy: ", err);
         }
     );
+}
+
+function formatLineBreaks(formatThisLIne){
+    var formattedLine = formatThisLIne.replace("\r", "");
+    formattedLine = formattedLine.replace("\n", "");
+    return formattedLine;
 }
