@@ -1,39 +1,162 @@
-<html>
-<script src="script.js"></script>
-<link rel="stylesheet" type="text/css" href="style.css">
+<head>
 
-<div id="container" style="margin: auto; width: 80%">
-    <div id="toolbar">
-        <ul>
-            <li>
-                <button onclick="convert()">Convert to script</button>
-            </li>
-            <li>
-                <button onclick="copyTextToClipboard()">Copy to clipboard</button>
-            </li>
-            <li>
-                <input id="bindInput" type="" maxlength="1" placeholder="Bind to this key">
-            </li>
-            <li>
-                <input id="checkboxMouseInput" type="checkbox"> Is mouse button? (.ie 1 in "Bind to this key" for mouse1 2 for mouse2 etc)
-            </li>
-        </ul>
 
+</head>
+
+<body>
+    <p>average reaction time: <b id="result_screen"></b><span><button onclick="reset_results()">reset</button></span></p>
+    <div id="target_box">
+        <p id="target_label">Hold m2 to charge</p>
     </div>
-    <div id="inputDiv" style="float: left; width: 50%">
-        <p>Input</p>
-        <textarea id="inputArea" style="width:100%; resize: none" rows="50">
-            
-        </textarea>
-    </div>
-    <div id="outputDiv" style="float: right; width: 50%">
-        <p>Output</p>
-        <textarea id="outputArea" readonly style="width:100%; resize: none" rows="50" cols="150">
-            
-        </textarea>
-    </div>
-</div>
+    <label for="charge_bar">Charge:</label>
+    <progress id="charge_bar" max="310" value="0"></progress>
+    <script>
+        //charge 3.1 sec
+        var results = [];
+        var mouseDown = 0;
+        var enabled_since = 0;
+        var max_timer_offset = 200;
+        var target_enabled = false;
+        var generator_enabled = false;
+        var start_time;
+        var end_time;        
+        var timer_offset = 0;
+
+        var target_box = document.getElementById("target_box");
+        var target_label = document.getElementById("target_label");
+        var charge_bar = document.getElementById("charge_bar");
+        var result_screen = document.getElementById("result_screen");
 
 
+        var text_label_start = "hold m2 to charge";
+        var text_label_enabled = "keep at 99";
+        var text_label_target = "hit me";
 
-</html>
+        var color_start = "transparent";
+        var color_enabled = "red";
+        var color_target = "green";
+
+
+        target_label.innerText = text_label_start;
+
+        document.body.onmousedown = function() {
+            ++mouseDown;
+        }
+        document.body.onmouseup = function() {
+            --mouseDown;
+        }
+        window.addEventListener('contextmenu', (event) => {
+            event.preventDefault()
+        })
+        
+        function reset_results(){
+            result_screen.innerText = "";
+            results = [];
+        }
+
+        function start_timer() {
+            start_time = new Date();
+        };
+
+        function get_elapsed_time() {
+            return new Date() - start_time;
+        }
+
+        function update_result(){
+            result_screen.innerText = results.reduce((a, b) => a + b, 0) / results.length;
+        }
+
+        setInterval(function() {
+            update_bar();
+        }, 10)
+
+        function reset_elements() {
+            charge_bar.value = 0;
+            target_label.innerText = text_label_start;
+        }
+
+        function notify_reset() {
+            if (target_enabled) {
+                let time = get_elapsed_time();
+                results.push(time)
+                alert(`you hit the target in ${time} ms`)
+                update_result();
+            } else {
+                alert("too soon idiot")
+            }
+        };
+
+        function reset_inputs() {
+            mouseDown = 0;
+        }
+
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+
+        function enable_generator() {
+            timer_offset = getRandomInt(max_timer_offset);
+            generator_enabled = true;
+            target_box.style.backgroundColor = color_enabled;
+            target_label.innerText = text_label_enabled;
+        }
+
+        function disable_generator() {
+            disable_target();
+            generator_enabled = false;
+            target_box.style.backgroundColor = color_start;
+            target_label.innerText = text_label_start;
+        }
+
+        function start_charge() {
+            reset_elements();
+            reset_inputs();
+            notify_reset();
+        }
+
+        function enable_target() {
+            target_enabled = true;
+            target_box.backgroundColor = color_target;
+            target_label.innerText = text_label_target;
+            start_timer();
+        }
+
+        function disable_target() {
+            target_enabled = false;
+            enabled_since = 0;
+            if (charge_bar.value > 232) {
+                target_box.backgroundColor = color_enabled;
+                target_label.innerText = text_label_target;
+            }
+        }
+
+        function update_bar() {
+            if (mouseDown > 0) {
+                if (charge_bar.value > 232 && !generator_enabled) {
+                    enable_generator();
+                }
+                if (generator_enabled) {
+                    enabled_since += 1;
+                    console.log(`enabled since:${enabled_since}; timer_offset:${timer_offset}`);
+                    if (enabled_since > 100 + timer_offset && !target_enabled) {
+                        enable_target();
+                    }
+                }
+                charge_bar.value += 1;
+                if (charge_bar.value > 309) {
+                    start_charge();
+                }
+            } else {
+                if (charge_bar.value <= 232 && generator_enabled) {
+                    disable_generator();
+                    disable_target();
+                }
+                if (charge_bar.value > 0) {
+                    charge_bar.value -= 1;
+                } else {
+                    reset_elements();
+                }
+            }
+        }
+    </script>
+</body>
