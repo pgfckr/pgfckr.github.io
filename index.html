@@ -27,7 +27,7 @@
         var charge_bar = document.getElementById("charge_bar");
         var result_screen = document.getElementById("result_screen");
 
-
+        var idiot_adress = "idiot_counter_storage";
         var text_label_start = "hold m2 to charge";
         var text_label_enabled = "keep at 99";
         var text_label_target = "hit me";
@@ -36,6 +36,12 @@
         var color_start = "transparent";
         var color_enabled = "red";
         var color_target = "green";
+
+        try{
+            idiot_counter = sessionStorage.getItem(idiot_adress);
+        }catch{
+            console.log("IDIOT COUNTER NOT SET");
+        }
 
 
         target_label.innerText = text_label_start;
@@ -53,6 +59,7 @@
         function reset_results(){
             result_screen.innerText = "";
             results = [];
+            reset_inputs();
         }
 
         function start_timer() {
@@ -93,7 +100,8 @@
         };
         function increase_idiot(){
             alert("too soon idiot");
-            idiot_counter += 1;
+            idiot_counter += 1;            
+            sessionStorage.setItem(idiot_adress, idiot_counter);
             stupid_idiot_screen.innerText = idiot_counter;
         }
 
