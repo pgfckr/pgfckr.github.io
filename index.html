@@ -4,7 +4,7 @@
 </head>
 
 <body>
-    <p>average reaction time: <b id="result_screen"></b><span><button onclick="reset_results()">reset</button></span><span>Stupid Idiot Counter:</span><b id="stupid_idiot_screen">0</b></p>
+    <p>average reaction time: <b id="result_screen"></b><span><button onclick="reset_results()">reset</button></span><span> Stupid Idiot Counter: </span><b id="stupid_idiot_screen">0</b></p>
     <div id="target_box">
         <p id="target_label">Hold m2 to charge</p>
     </div>
@@ -63,8 +63,13 @@
             return new Date() - start_time;
         }
 
+        function get_formatted_average(){
+            let average = results.reduce((a, b) => a + b, 0) / results.length;
+            return new Intl.NumberFormat('en-IN').format(average) + "ms";
+        }
+
         function update_result(){
-            result_screen.innerText = results.reduce((a, b) => a + b, 0) / results.length;
+            result_screen.innerText = get_formatted_average();
         }
 
         setInterval(function() {
