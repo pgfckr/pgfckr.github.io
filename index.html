@@ -4,7 +4,7 @@
 </head>
 
 <body>
-    <p>average reaction time: <b id="result_screen"></b><span><button onclick="reset_results()">reset</button></span></p>
+    <p>average reaction time: <b id="result_screen"></b><span><button onclick="reset_results()">reset</button></span><span>Stupid Idiot Counter:</span><b id="stupid_idiot_screen">0</b></p>
     <div id="target_box">
         <p id="target_label">Hold m2 to charge</p>
     </div>
@@ -21,7 +21,7 @@
         var start_time;
         var end_time;        
         var timer_offset = 0;
-
+        var idiot_counter = 0;
         var target_box = document.getElementById("target_box");
         var target_label = document.getElementById("target_label");
         var charge_bar = document.getElementById("charge_bar");
@@ -31,6 +31,7 @@
         var text_label_start = "hold m2 to charge";
         var text_label_enabled = "keep at 99";
         var text_label_target = "hit me";
+        var stupid_idiot_screen = document.getElementById("stupid_idiot_screen")
 
         var color_start = "transparent";
         var color_enabled = "red";
@@ -82,9 +83,14 @@
                 alert(`you hit the target in ${time} ms`)
                 update_result();
             } else {
-                alert("too soon idiot")
+                increase_idiot();
             }
         };
+        function increase_idiot(){
+            alert("too soon idiot");
+            idiot_counter += 1;
+            stupid_idiot_screen.innerText = idiot_counter;
+        }
 
         function reset_inputs() {
             mouseDown = 0;
