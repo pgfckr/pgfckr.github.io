@@ -148,7 +148,6 @@
                 }
                 if (generator_enabled) {
                     enabled_since += 1;
-                    console.log(`enabled since:${enabled_since}; timer_offset:${timer_offset}`);
                     if (enabled_since > 100 + timer_offset && !target_enabled) {
                         enable_target();
                     }
